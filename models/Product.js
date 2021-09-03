@@ -10,6 +10,32 @@ class Product extends Model {}
 Product.init(
   {
     // define columns
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    product_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: false
+    },
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      // Make default value 10 and validates that the value is numeric
+    },
+    category_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        // This references the `reader` model, which we set in `Reader.js` as its `modelName` property
+        model: 'Category',
+        key: 'id',
+      },
+    }
   },
   {
     sequelize,
