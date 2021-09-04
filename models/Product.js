@@ -26,12 +26,14 @@ Product.init(
     stock: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      // Make default value 10 and validates that the value is numeric
+      defualtValue: '10',
+      validate: {
+        isNumeric: true,
+      },
     },
     category_id: {
       type: DataTypes.INTEGER,
       references: {
-        // This references the `reader` model, which we set in `Reader.js` as its `modelName` property
         model: 'Category',
         key: 'id',
       },
