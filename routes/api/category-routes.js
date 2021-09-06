@@ -48,12 +48,42 @@ router.post('/', (req, res) => {
   }
 });
 
+// updated category based on ID
 router.put('/:id', (req, res) => {
-  // update a category by its `id` value
+  try {
+    const updatedCategory = await Category.update({
+      category_name: req.body.category_name,
+    }, {
+    where: {
+        id: req.params.id,
+    },
+  });
+  if (!updatedCategory) {
+    res.status(404).json({ message: "No category found with the referenced id"});
+    return;
+  }
+  res.status(200).json(updatedCategory);
+  } catch (err) {
+    res.status(500).json(err)
+  }
 });
 
+// delete a category by its `id` value
 router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
+  try {
+    const deleteCategory = await Category.delete({ 
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!deleteCategory) {
+      res.status(404).json({ message: "No category found with the referenced id"});
+      return;
+    } 
+      res.status(200).json(deleteCategory);
+    } catch (err) {
+        res.status(500).json(err);
+  }
 });
 
 module.exports = router;
