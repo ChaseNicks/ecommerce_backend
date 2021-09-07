@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 // brings back category based on ID needed
 router.get('/:id', (req, res) => {
   try {
-    const categoryReqID = await Category.findAll({
+    const categoryReqID = await Category.findByPk({
       include: [{ model: Product }],
     });
 
