@@ -6,10 +6,10 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // get all products
 router.get('/', (req, res) => {
   try {
-    const categoryReq = await Category.findAll({
-      include: [{ model: Category, as: 'category' }, { model: Tag, through: ProductTag, as: 'tag_id' }],
+    const productReq = await Product.findAll({
+      include: [{ model: Category, as: 'category' }, { model: Tag, through: ProductTag, as: 'tagIds' }],
     });
-    res.status(200).json(categoryReq);
+    res.status(200).json(productReq);
 
     } catch (err) {
       res.status(500).json(err);
@@ -18,20 +18,24 @@ router.get('/', (req, res) => {
 
 // get one product
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+  try {
+    const productReqID = await Product.findByPk(req.params.id, {
+      include: [{ model: Category, as: 'category' }, { model: Tag, through: ProductTag, as: 'tagIds' }],
+    });
+
+    if (!productReqID) {
+      res.status(404).json({ message: "No corresponding product for the requested ID"})
+      return;
+    }
+    res.status(200).json(tagproductReqIDReqID);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 // create new product
 router.post('/', (req, res) => {
-  /* req.body should look like this...
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
-    }
-  */
+
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
@@ -96,8 +100,22 @@ router.put('/:id', (req, res) => {
     });
 });
 
+// delete one product by its `id` value
 router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+  try {
+    const deleteProduct = await Product.delete({ 
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!deleteProduct) {
+      res.status(404).json({ message: "No product found with the referenced id"});
+      return;
+    } 
+      res.status(200).json(deleteProduct);
+    } catch (err) {
+        res.status(500).json(err);
+  }
 });
 
 module.exports = router;
