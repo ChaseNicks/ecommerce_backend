@@ -2,32 +2,30 @@ const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
-
-// get all products
-router.get('/', (req, res) => {
+// Route to get all products
+router.get('/', async (req, res) => {
   try {
-    const productReq = await Product.findAll({
-      include: [{ model: Category, as: 'category' }, { model: Tag, through: ProductTag, as: 'tagIds' }],
+    const productsData = await Product.findAll({
+      include: [{model: Category, as: 'category'}, {model: Tag, through: ProductTag, as: 'tagIds'}]
     });
-    res.status(200).json(productReq);
-
-    } catch (err) {
-      res.status(500).json(err);
-    }
+    res.status(200).json(productsData);
+  } catch (err) {
+    res.status(500).json(err)
+  }
 });
 
-// get one product
-router.get('/:id', (req, res) => {
+// Route to get a single product based on its 'id' value
+router.get('/:id', async (req, res) => {
+  // find a single product by its `id`
   try {
-    const productReqID = await Product.findByPk(req.params.id, {
-      include: [{ model: Category, as: 'category' }, { model: Tag, through: ProductTag, as: 'tagIds' }],
+    const singleProductData = await Product.findByPk(req.params.id, {
+      include: [{model: Category, as: 'category'}, {model: Tag, through: ProductTag, as: 'tagIds'}]
     });
-
-    if (!productReqID) {
-      res.status(404).json({ message: "No corresponding product for the requested ID"})
+    if(!singleProductData){
+      res.status(404).json({message: 'No product found with this id.'});
       return;
     }
-    res.status(200).json(tagproductReqIDReqID);
+    res.status(200).json(singleProductData);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -35,7 +33,6 @@ router.get('/:id', (req, res) => {
 
 // create new product
 router.post('/', (req, res) => {
-
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
@@ -100,21 +97,22 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// delete one product by its `id` value
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    const deleteProduct = await Product.delete({ 
+    const deletedProduct = await Product.destroy({
       where: {
-        id: req.params.id,
-      },
+        id: req.params.id
+      }
     });
-    if (!deleteProduct) {
-      res.status(404).json({ message: "No product found with the referenced id"});
+
+    if(!deletedProduct){
+      res.status(404).json({message: 'There is no product with this id.'});
+
       return;
-    } 
-      res.status(200).json(deleteProduct);
-    } catch (err) {
-        res.status(500).json(err);
+    }
+    res.status(200).json(deletedProduct);
+  } catch (err) {
+    res.status(500).json(deletedProduct);
   }
 });
 
