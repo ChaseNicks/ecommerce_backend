@@ -1,3 +1,7 @@
+
+
+https://user-images.githubusercontent.com/81818805/132949045-8b376f6d-40c2-4c01-a288-8548a2959c45.mp4
+
 # Ecomm Backend Application
 
 # Table of Contents
@@ -42,6 +46,9 @@ A backend ecommerce application, ran off RESTful api routes that was created usi
 
 # Demo
 
+https://user-images.githubusercontent.com/81818805/132949055-bdf334fd-5e08-45fe-81ca-97cf2c797908.mp4
+
+https://user-images.githubusercontent.com/81818805/132949061-29dd31e3-38a6-4acf-b3ee-e9edc2d8c62f.mp4
 
 
 # License
