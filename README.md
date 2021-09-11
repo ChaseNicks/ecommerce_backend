@@ -1,7 +1,3 @@
-
-
-https://user-images.githubusercontent.com/81818805/132949045-8b376f6d-40c2-4c01-a288-8548a2959c45.mp4
-
 # Ecomm Backend Application
 
 # Table of Contents
